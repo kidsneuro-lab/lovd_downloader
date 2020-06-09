@@ -1,6 +1,8 @@
 import math
 import logging
 import traceback
+import random
+import time
 
 import requests
 import pandas as pd
@@ -11,15 +13,14 @@ from . import common
 
 logger = logging.getLogger('tx_map')
 
-def get_gene_map(lovd_url: str, output:str, page_count_limit: int = None):
+def get_gene_map(lovd_url: str, output:str, page_count_limit: int = None, entries_limit:int = 1000):
     lovd_url = "{}{}".format(lovd_url, common.lovd_tx_url_suffix)
     
-    lovd_params = {'order':'variants',
-                   'page_size':common.page_size,
+    lovd_params = {'order':'id_,ASC',
+                   'page_size':entries_limit,
                    'page':1}
 
     tx_list = []
-    logger.debug("Page size: {}".format(common.page_size))
 
     try:
         logger.info("Obtaining list of transcripts on page: {}".format(1))
@@ -29,32 +30,41 @@ def get_gene_map(lovd_url: str, output:str, page_count_limit: int = None):
         total_entries = int(soup.find("input", {'name':'total'})['value'])
         logger.info("Total no. of transcripts in LOVD: {}".format(total_entries))        
         
-        page_count = math.ceil(total_entries / common.page_size)
-        logger.debug("No. of pages: {} ({} entries per page)".format(page_count, common.page_size))        
+        page_count = math.ceil(total_entries / entries_limit)
+        logger.info("No. of pages: {} ({} entries per page)".format(page_count, entries_limit))        
 
         logger.debug("Searching for <table id='viewlistTable_Transcripts'>")
         viewlistTable_Transcripts = soup.find(id='viewlistTable_Transcripts')
-        tx_list.append(pd.read_html(viewlistTable_Transcripts.prettify(), converters={'ID': str})[0])
+
+        tx_df = pd.read_html(viewlistTable_Transcripts.prettify(), converters={'ID': str})[0]
+        tx_df['Download_Date'] = time.strftime('%Y-%m-%d')
+        tx_list.append(tx_df)
 
         if page_count > 1:
             # Set a limit on the page count if user has restricted
             if page_count_limit is not None:
-                logger.info("Limiting no. of pages extracted to: {}".format(page_count_limit))
+                logger.debug("Limiting no. of pages extracted to: {}".format(page_count_limit))
                 if page_count > page_count_limit:
                     page_count = page_count_limit
 
             for page in range(2, page_count + 1):
                 logger.info("Obtaining list of transcripts on page: {}".format(page))
                 lovd_params = {'order':'id_,ASC',
-                            'page_size':common.page_size,
-                            'page':page}
-                
+                               'page_size':entries_limit,
+                               'page':page}
+
+                logger.debug('Sleep for random no. of seconds') # That may reduce the chances of being blocked
+                time.sleep(random.choice([3,5,7,9]))
+
                 r = requests.get(lovd_url, headers=common.lovd_headers, params=lovd_params)
                 soup = BeautifulSoup(r.content, features="lxml")
 
                 logger.debug("Searching for <table id='viewlistTable_Transcripts'>")
                 viewlistTable_Transcripts = soup.find(id='viewlistTable_Transcripts')
-                tx_list.append(pd.read_html(viewlistTable_Transcripts.prettify(), converters={'ID': str})[0])
+
+                tx_df = pd.read_html(viewlistTable_Transcripts.prettify(), converters={'ID': str})[0]
+                tx_df['Download_Date'] = time.strftime('%Y-%m-%d')
+                tx_list.append(tx_df)
 
     except requests.exceptions.RequestException:
         logger.error("Encountered error while accessing URL [{}]: {}".format(lovd_url, traceback.format_exc()))

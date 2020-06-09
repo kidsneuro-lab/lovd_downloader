@@ -2,6 +2,8 @@ import math
 import logging
 import traceback
 import re
+import random
+import time
 
 import requests
 import pandas as pd
@@ -57,7 +59,12 @@ def get_variants(lovd_url: str, output:str, tx_map:str, genes:list = None, page_
 
                     logger.debug("Searching for <table id='viewlistTable_*'>")
                     viewlistTable = soup.find_all(id=re.compile('viewlistTable'))[0]
-                    vars_list.append(pd.read_html(viewlistTable.prettify())[0])
+
+                    vars_df = pd.read_html(viewlistTable.prettify())[0]
+                    vars_df['Transcript'] = tx['name']
+                    vars_df['Gene'] = gene
+                    vars_df['Download_Date'] = time.strftime('%Y-%m-%d')
+                    vars_list.append(vars_df)
 
                     if page_count > 1:
                         # Set a limit on the page count if user has restricted
@@ -73,16 +80,24 @@ def get_variants(lovd_url: str, output:str, tx_map:str, genes:list = None, page_
                                         'page_size':entries_limit,
                                         'search_transcriptid':tx['id'],
                                         'page':page}
+
+                            logger.debug('Sleep for random no. of seconds') # That may reduce the chances of being blocked
+                            time.sleep(random.choice([3,5,7,9]))
                             
                             r = requests.get(url, headers=common.lovd_headers, params=lovd_params)
                             soup = BeautifulSoup(r.content, features="lxml")
 
                             logger.debug("Searching for <table id='viewlistTable_*'>")
                             viewlistTable = soup.find_all(id=re.compile('viewlistTable'))[0]
-                            vars_list.append(pd.read_html(viewlistTable.prettify())[0])
+
+                            vars_df = pd.read_html(viewlistTable.prettify())[0]
+                            vars_df['Transcript'] = tx['name']
+                            vars_df['Gene'] = gene
+                            vars_df['Download_Date'] = time.strftime('%Y-%m-%d')
+                            vars_list.append(vars_df)
                 
                 except requests.exceptions.RequestException:
-                    logger.error("Encountered error while accessing URL [{}]: {}".format(url, traceback.format_exc()))
+                    logger.error("Encountered error while accessing URL [{}]: {}".format(lovd_url, traceback.format_exc()))
                     exit(2)
 
                 except Exception:
