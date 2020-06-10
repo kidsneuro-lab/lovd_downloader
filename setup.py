@@ -22,7 +22,7 @@ test_requirements = [ ]
 setup(
     author="Himanshu Joshi",
     author_email='hihi.joshi@gmail.com',
-    python_requires='>=3.6',
+    python_requires='>=3.5',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
