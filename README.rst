@@ -24,7 +24,7 @@ Toolset to download variants data from LOVD
 
 Installation
 --------
-* Download latest release .tar.gz
+* Download latest `Release <https://github.com/kidsneuro-lab/lovd_downloader/releases>`_
 * Ensure you are installing this in a virtual environment
 * Requires Python >= 3.6
 
