@@ -10,7 +10,10 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = [ ]
+requirements = ['beautifulsoup4>=4.9.1',
+                'pandas>=1.0.3',
+                'requests>=2.23.0',
+                'lxml>=4.5.1']
 
 setup_requirements = [ ]
 
@@ -19,7 +22,7 @@ test_requirements = [ ]
 setup(
     author="Himanshu Joshi",
     author_email='hihi.joshi@gmail.com',
-    python_requires='>=3.5',
+    python_requires='>=3.6',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
