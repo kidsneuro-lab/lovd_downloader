@@ -1,0 +1,20 @@
+ID	Chr	Gene_ID	Name	NCBI_ID	NCBI_Protein_ID	Variants	Download_Date
+00000003	4	AGA	aspartylglucosaminidase, transcript variant 1	NM_000027.3	NP_000018.2	66	2020-06-07
+00000005	12	PAH	phenylalanine hydroxylase	NM_000277.1	NP_000268.1	212	2020-06-07
+00000006	9	ASS1	argininosuccinate synthase 1, transcript variant 1	NM_000050.4	NP_000041.2	225	2020-06-07
+00000007	X	DLG3	discs, large homolog 3 (Drosophila), transcript variant 1	NM_021120.3	NP_066943.2	71	2020-06-07
+00000008	1	USH2A	Usher syndrome 2A (autosomal recessive, mild), transcript variant 2	NM_206933.2	NP_996816.2	9981	2020-06-07
+00000009	3	CRBN	cereblon, transcript variant 1	NM_016302.3	NP_057386.2	13	2020-06-07
+00000010	16	CLN3	ceroid-lipofuscinosis, neuronal 3, transcript variant 1	NM_001042432.1	NP_001035897.1	585	2020-06-07
+00000012	X	OFD1	oral-facial-digital syndrome 1	NM_003611.2	NP_003602.1	128	2020-06-07
+00000013	19	JAK3	Janus kinase 3	NM_000215.3	NP_000206.2	104	2020-06-07
+00000015	X	ZNF41	zinc finger protein 41, transcript variant 1	NM_007130.2	NP_009061.1	50	2020-06-07
+00000016	10	CDH23	cadherin-related 23, transcript variant 1	NM_022124.5	NP_071407.4	2330	2020-06-07
+00000017	11	HBB	hemoglobin, beta	NM_000518.4	NP_000509.1	20926	2020-06-07
+00000019	3	COL7A1	collagen, type VII, alpha 1	NM_000094.3	NP_000085.1	976	2020-06-07
+00000021	12	CEP290	centrosomal protein 290kDa	NM_025114.3	NP_079390.3	548	2020-06-07
+00000022	2	BMPR2	bone morphogenetic protein receptor, type II (serine/threonine kinase)	NM_001204.6	NP_001195.2	29	2020-06-07
+00000023	15	MYO5A	myosin VA (heavy chain 12, myoxin), transcript variant 1	NM_000259.3	NP_000250.3	87	2020-06-07
+00000024	X	DMD	dystrophin, transcript variant Dp427m	NM_004006.2	NP_003997.1	26820	2020-06-07
+00000025	1	GBA	glucosidase, beta, acid, transcript variant 2	NM_000157.3	NP_001005741.1	64	2020-06-07
+00000028	1	HSPG2	heparan sulfate proteoglycan 2	NM_005529.5	NP_005520.4	231	2020-06-07

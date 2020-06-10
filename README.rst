@@ -6,7 +6,7 @@ lovd_downloader
 .. image:: https://img.shields.io/pypi/v/lovd_downloader.svg
         :target: https://pypi.python.org/pypi/lovd_downloader
 
-.. image:: https://img.shields.io/travis/h-joshi/lovd_downloader.svg
+.. image:: https://travis-ci.com/kidsneuro-lab/lovd_downloader.svg?token=EpL6q11iM5fdJG4ZMg8X&branch=master
         :target: https://travis-ci.com/h-joshi/lovd_downloader
 
 .. image:: https://readthedocs.org/projects/lovd-downloader/badge/?version=latest

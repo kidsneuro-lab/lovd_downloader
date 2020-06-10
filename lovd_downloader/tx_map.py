@@ -9,7 +9,8 @@ import pandas as pd
 from bs4 import BeautifulSoup
 import lxml
 
-from . import common
+from lovd_downloader import common
+from lovd_downloader.common import InvalidLOVDSiteException
 
 logger = logging.getLogger('tx_map')
 
@@ -68,11 +69,15 @@ def get_gene_map(lovd_url: str, output:str, page_count_limit: int = None, entrie
 
     except requests.exceptions.RequestException:
         logger.error("Encountered error while accessing URL [{}]: {}".format(lovd_url, traceback.format_exc()))
-        exit(2)
+        raise
+
+    except TypeError:
+        logger.error("Invalid format. The URL [{}] may not be a valid LOVD installation".format(lovd_url))
+        raise InvalidLOVDSiteException
 
     except Exception:
         logger.error("Encountered error: {}".format(traceback.format_exc()))
-        exit(2)
+        raise
 
     else:
         genes_map = pd.concat(tx_list)

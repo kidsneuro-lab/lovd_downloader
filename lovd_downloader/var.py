@@ -10,7 +10,8 @@ import pandas as pd
 from bs4 import BeautifulSoup
 import lxml
 
-from . import common
+from lovd_downloader import common
+from lovd_downloader.common import InvalidLOVDSiteException, GeneNotInTxMapException
 
 logger = logging.getLogger('variants')
 
@@ -19,11 +20,11 @@ def get_variants(lovd_url: str, output:str, tx_map:str, genes:list = None, page_
         tx_map = pd.read_csv(tx_map, sep="\t", dtype={'ID':str})
     except Exception:
         logger.error("Encountered error while loading transcripts: {}".format(traceback.format_exc()))
-        exit(2)
+        raise
 
     if len(set(genes).difference(tx_map['Gene_ID'])) != 0:
         logger.error("Genes {} not in list of transcripts. Please check list of genes queries".format(', '.join(set(genes).difference(tx_map['Gene_ID']))))
-        exit(2)
+        raise GeneNotInTxMapException
 
     vars_list = []
 
@@ -98,11 +99,15 @@ def get_variants(lovd_url: str, output:str, tx_map:str, genes:list = None, page_
                 
                 except requests.exceptions.RequestException:
                     logger.error("Encountered error while accessing URL [{}]: {}".format(lovd_url, traceback.format_exc()))
-                    exit(2)
+                    raise
+
+                except TypeError:
+                    logger.error("Invalid format. The URL [{}] may not be a valid LOVD installation".format(lovd_url))
+                    raise InvalidLOVDSiteException
 
                 except Exception:
                     logger.error("Encountered error: {}".format(traceback.format_exc()))
-                    exit(2)
+                    raise
 
     if len(vars_list) > 0:
         variants = pd.concat(vars_list)
