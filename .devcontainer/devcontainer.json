@@ -6,6 +6,9 @@
 	"image": "mcr.microsoft.com/devcontainers/python:3.6",
 	"features": {
 		"ghcr.io/jungaretti/features/make:1": {}
+	},
+	"containerEnv": {
+		"PIP_DISABLE_PIP_VERSION_CHECK": "1"
 	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
