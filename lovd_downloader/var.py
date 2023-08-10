@@ -52,50 +52,53 @@ def get_variants(lovd_url: str, output:str, tx_map:str, genes:list = None, page_
                     r = requests.get(url, headers=common.lovd_headers, params=lovd_params)
                     soup = BeautifulSoup(r.content, features="lxml")
 
-                    total_entries = int(soup.find("input", {'name':'total'})['value'])
-                    logger.info("Total no. of variants: {}".format(total_entries))
+                    if soup.find("input", {'name':'total'}) == None:
+                        logger.info(f"No variants for gene: {gene}")
+                    else:
+                        total_entries = int(soup.find("input", {'name':'total'})['value'])
+                        logger.info("Total no. of variants: {}".format(total_entries))
 
-                    page_count = math.ceil(total_entries / entries_limit)
-                    logger.debug("No. of pages: {} ({} entries per page)".format(page_count, entries_limit))   
+                        page_count = math.ceil(total_entries / entries_limit)
+                        logger.debug("No. of pages: {} ({} entries per page)".format(page_count, entries_limit))   
 
-                    logger.debug("Searching for <table id='viewlistTable_*'>")
-                    viewlistTable = soup.find_all(id=re.compile('viewlistTable'))[0]
+                        logger.debug("Searching for <table id='viewlistTable_*'>")
+                        viewlistTable = soup.find_all(id=re.compile('viewlistTable'))[0]
 
-                    vars_df = pd.read_html(viewlistTable.prettify())[0]
-                    vars_df['Transcript'] = tx['name']
-                    vars_df['Gene'] = gene
-                    vars_df['Download_Date'] = time.strftime('%Y-%m-%d')
-                    vars_list.append(vars_df)
+                        vars_df = pd.read_html(viewlistTable.prettify())[0]
+                        vars_df['Transcript'] = tx['name']
+                        vars_df['Gene'] = gene
+                        vars_df['Download_Date'] = time.strftime('%Y-%m-%d')
+                        vars_list.append(vars_df)
 
-                    if page_count > 1:
-                        # Set a limit on the page count if user has restricted
-                        if page_count_limit is not None:
-                            logger.debug("Limiting no. of pages extracted to: {}".format(page_count_limit))
-                            if page_count > page_count_limit:
-                                page_count = page_count_limit
+                        if page_count > 1:
+                            # Set a limit on the page count if user has restricted
+                            if page_count_limit is not None:
+                                logger.debug("Limiting no. of pages extracted to: {}".format(page_count_limit))
+                                if page_count > page_count_limit:
+                                    page_count = page_count_limit
 
-                        for page in range(2, page_count + 1):
-                            logger.debug("Obtaining variants on page: {}".format(page))
-                            lovd_params = {'id':gene,
-                                        'order':'VariantOnGenome/DBID',
-                                        'page_size':entries_limit,
-                                        'search_transcriptid':tx['id'],
-                                        'page':page}
+                            for page in range(2, page_count + 1):
+                                logger.debug("Obtaining variants on page: {}".format(page))
+                                lovd_params = {'id':gene,
+                                            'order':'VariantOnGenome/DBID',
+                                            'page_size':entries_limit,
+                                            'search_transcriptid':tx['id'],
+                                            'page':page}
 
-                            logger.debug('Sleep for random no. of seconds') # That may reduce the chances of being blocked
-                            time.sleep(random.choice([3,5,7,9]))
-                            
-                            r = requests.get(url, headers=common.lovd_headers, params=lovd_params)
-                            soup = BeautifulSoup(r.content, features="lxml")
+                                logger.debug('Sleep for random no. of seconds') # That may reduce the chances of being blocked
+                                time.sleep(random.choice([3,5,7,9]))
+                                
+                                r = requests.get(url, headers=common.lovd_headers, params=lovd_params)
+                                soup = BeautifulSoup(r.content, features="lxml")
 
-                            logger.debug("Searching for <table id='viewlistTable_*'>")
-                            viewlistTable = soup.find_all(id=re.compile('viewlistTable'))[0]
+                                logger.debug("Searching for <table id='viewlistTable_*'>")
+                                viewlistTable = soup.find_all(id=re.compile('viewlistTable'))[0]
 
-                            vars_df = pd.read_html(viewlistTable.prettify())[0]
-                            vars_df['Transcript'] = tx['name']
-                            vars_df['Gene'] = gene
-                            vars_df['Download_Date'] = time.strftime('%Y-%m-%d')
-                            vars_list.append(vars_df)
+                                vars_df = pd.read_html(viewlistTable.prettify())[0]
+                                vars_df['Transcript'] = tx['name']
+                                vars_df['Gene'] = gene
+                                vars_df['Download_Date'] = time.strftime('%Y-%m-%d')
+                                vars_list.append(vars_df)
                 
                 except requests.exceptions.RequestException:
                     logger.error("Encountered error while accessing URL [{}]: {}".format(lovd_url, traceback.format_exc()))
