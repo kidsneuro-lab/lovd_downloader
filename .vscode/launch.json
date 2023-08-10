@@ -25,6 +25,19 @@
             "justMyCode": true
         },
         {
+            "name": "var_cli APLP2",
+            "type": "python",
+            "request": "launch",
+            "module": "lovd_downloader.var_cli",
+            "args": [
+                "-u", "https://databases.lovd.nl",
+                "-t", "output/transcripts.tsv",
+                "-o", "output/variants_APLP2.tsv",
+                "-g", "APLP2"
+            ],
+            "justMyCode": true
+        },
+        {
             "name": "var_cli All genes",
             "type": "python",
             "request": "launch",
