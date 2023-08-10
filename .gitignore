@@ -101,8 +101,5 @@ ENV/
 # mypy
 .mypy_cache/
 
-# IDE settings
-.vscode/
-
 # DS Store
 .DS_Store

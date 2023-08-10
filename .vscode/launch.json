@@ -1,0 +1,40 @@
+{
+    "configurations": [
+        {
+            "name": "tx_map_cli",
+            "type": "python",
+            "request": "launch",
+            "module": "lovd_downloader.tx_map_cli",
+            "args": [
+                "-u", "https://databases.lovd.nl",
+                "-o", "output/transcripts.tsv"
+            ],
+            "justMyCode": true
+        },
+        {
+            "name": "var_cli CAPN3,DYSF",
+            "type": "python",
+            "request": "launch",
+            "module": "lovd_downloader.var_cli",
+            "args": [
+                "-u", "https://databases.lovd.nl",
+                "-t", "output/transcripts.tsv",
+                "-o", "output/variants_CAPN3_DYSF.tsv",
+                "-g", "CAPN3,DYSF"
+            ],
+            "justMyCode": true
+        },
+        {
+            "name": "var_cli All genes",
+            "type": "python",
+            "request": "launch",
+            "module": "lovd_downloader.var_cli",
+            "args": [
+                "-u", "https://databases.lovd.nl",
+                "-t", "output/transcripts.tsv",
+                "-o", "output/variants_All_Genes.tsv"
+            ],
+            "justMyCode": true
+        }
+    ]
+}

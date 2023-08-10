@@ -26,7 +26,7 @@ Installation
 --------
 * Download latest `Release <https://github.com/kidsneuro-lab/lovd_downloader/releases>`_
 * Ensure you are installing this in a virtual environment
-* Requires Python == 3.6
+* Requires Python == 3.7
 
 Features
 --------
