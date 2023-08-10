@@ -10,10 +10,11 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['beautifulsoup4>=4.9.1',
-                'pandas>=1.0.3',
-                'requests>=2.23.0',
-                'lxml>=4.5.1']
+requirements = ['beautifulsoup4==4.6.1',
+                'pandas==1.0.3',
+                'requests==2.23.0',
+                'lxml==4.5.1',
+                'numpy==1.19.5']
 
 setup_requirements = [ ]
 
@@ -22,16 +23,13 @@ test_requirements = [ ]
 setup(
     author="Himanshu Joshi",
     author_email='hihi.joshi@gmail.com',
-    python_requires='>=3.6',
+    python_requires='>=3.6,<3.7',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
-        'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
     ],
     description="Toolset to download variants data from LOVD",
     entry_points={
