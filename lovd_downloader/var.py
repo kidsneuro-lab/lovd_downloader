@@ -20,11 +20,7 @@ def get_variants(lovd_url: str, output:str, tx_map:str, genes:list = None, page_
         tx_map = pd.read_csv(tx_map, sep="\t", dtype={'ID':str})
     except Exception:
         logger.error("Encountered error while loading transcripts: {}".format(traceback.format_exc()))
-        raise
-
-    if len(set(genes).difference(tx_map['Gene_ID'])) != 0:
-        logger.error("Genes {} not in list of transcripts. Please check list of genes queries".format(', '.join(set(genes).difference(tx_map['Gene_ID']))))
-        raise GeneNotInTxMapException
+        raise 
 
     vars_list = []
 
@@ -32,6 +28,10 @@ def get_variants(lovd_url: str, output:str, tx_map:str, genes:list = None, page_
         logger.info("All genes variants to be extracted")
         genes = tx_map['Gene_ID'].tolist()
     else:
+        if len(set(genes).difference(tx_map['Gene_ID'])) != 0:
+            logger.error("Genes {} not in list of transcripts. Please check list of genes queries".format(', '.join(set(genes).difference(tx_map['Gene_ID']))))
+            raise GeneNotInTxMapException
+
         logger.info("Extracting variants for {}".format(", ".join(genes)))
 
     for gene in genes:

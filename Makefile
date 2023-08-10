@@ -1,5 +1,6 @@
 .PHONY: clean clean-test clean-pyc clean-build docs help
 .DEFAULT_GOAL := help
+export PIP_DISABLE_PIP_VERSION_CHECK=1
 
 define BROWSER_PYSCRIPT
 import os, webbrowser, sys
