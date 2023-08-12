@@ -12,7 +12,7 @@ with open('HISTORY.rst') as history_file:
 
 requirements = ['beautifulsoup4==4.6.1',
                 'pandas==1.0.3',
-                'requests==2.23.0',
+                'requests==2.31.0',
                 'lxml==4.5.1',
                 'numpy==1.19.5']
 
